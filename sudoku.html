@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Sudoku Generator</title>
+<style>
+canvas {
+border: 1px solid #000;
+}
+</style>
+</head>
+<body>
+<canvas id="sudokuCanvas" width="450" height="450"></canvas>
+<script>
+const canvas = document.getElementById('sudokuCanvas');
+const ctx = canvas.getContext('2d');
+const cellSize = canvas.width / 9;
+function shuffle(arr) {
+for (let i = arr.length - 1; i > 0; i--) {
+const j = Math.floor(Math.random() * (i + 1));
+[arr[i], arr[j]] = [arr[j], arr[i]];
+}
+return arr;
+}
+function generateSudokuGrid() {
+const grid = [];
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+for (let i = 0; i < 9; i++) {
+grid.push([]);
+for (let j = 0; j < 9; j++) {
+grid[i].push(0); // Initialize grid with zeros
+}
+}
+for (let i = 0; i < 9; i++) {
+const shuffledNumbers = shuffle(numbers.slice());
+for (let j = 0; j < 9; j++) {
+grid[i][j] = shuffledNumbers[j];
+}
+}
+const totalNumbersToRemove = 40; // Adjust this number for difficulty level
+let numbersRemoved = 0;
+while (numbersRemoved < totalNumbersToRemove) {
+const row = Math.floor(Math.random() * 9);
+const col = Math.floor(Math.random() * 9);
+if (grid[row][col] !== 0) {
+grid[row][col] = 0;
+numbersRemoved++;
+}
+}
+return grid;
+}
+function drawSudoku(grid) {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.strokeStyle = '#000';
+ctx.lineWidth = 2;
+for (let i = 0; i < 9; i++) {
+for (let j = 0; j < 9; j++) {
+const value = grid[i][j];
+if (value !== 0) {
+ctx.fillStyle = '#000';
+ctx.font = '20px Arial';
+ctx.fillText(value, j * cellSize + 10, i * cellSize + 30);
+}
+ctx.strokeRect(j * cellSize, i * cellSize, cellSize, cellSize);
+}
+}
+ctx.lineWidth = 4;
+for (let i = 1; i < 3; i++) {
+ctx.beginPath();
+ctx.moveTo(i * cellSize * 3, 0);
+ctx.lineTo(i * cellSize * 3, canvas.height);
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo(0, i * cellSize * 3);
+ctx.lineTo(canvas.width, i * cellSize * 3);
+ctx.stroke();
+}
+}
+// Generate a random Sudoku grid and draw it
+const sudokuGrid = generateSudokuGrid();
+drawSudoku(sudokuGrid);
+</script>
+</body>
+</html>

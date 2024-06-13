@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlapping Squares</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Function to draw a square
+        function drawSquare(x, y, size) {
+            ctx.strokeRect(x, y, size, size);
+        }
+
+        const size = 50;  // Size of each square
+        const overlap = 20;  // Amount of overlap between squares
+
+        // Coordinates for the squares
+        const coordinates = [
+            { x: 50, y: 50 },
+            { x: 50 + overlap, y: 50 + overlap },
+            { x: 50 + 2 * overlap, y: 50 + 2 * overlap },
+            { x: 50 + 3 * overlap, y: 50 + 3 * overlap },
+        ];
+
+        // Draw each square
+        coordinates.forEach(coord => drawSquare(coord.x, coord.y, size));
+    </script>
+</body>
+</html>
